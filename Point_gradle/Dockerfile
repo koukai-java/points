@@ -7,8 +7,11 @@ WORKDIR /app
 # アプリケーションのソースコードをコンテナにコピーします
 COPY . /app/
 
+# 必要なディレクトリを作成
+RUN mkdir -p /app/libs/
+
 # Jakarta Servlet APIの依存関係を追加
-RUN wget -q https://repo1.maven.org/maven2/jakarta/servlet/jakarta.servlet-api/5.0.0/jakarta.servlet-api-5.0.0.jar -P /app/libs/
+RUN curl -L -o /app/libs/jakarta.servlet-api-5.0.0.jar https://repo1.maven.org/maven2/jakarta/servlet/jakarta.servlet-api/5.0.0/jakarta.servlet-api-5.0.0.jar
 
 # アプリケーションをビルドし、JAR ファイルを作成します
 RUN javac -classpath /app/libs/jakarta.servlet-api-5.0.0.jar:/app/src/main/resources -d build/classes /app/src/main/java/**/*.java && \
