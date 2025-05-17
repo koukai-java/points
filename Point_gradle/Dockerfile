@@ -8,14 +8,15 @@ WORKDIR /app
 COPY . /app/
 
 # アプリケーションをビルドし、JAR ファイルを作成します
-RUN javac -classpath /app/servlet-api.jar -d build/classes /app/src/main/java/**/*.java && \
+RUN javac -classpath /app/src/main/resources:/app/src/main/java -d build/classes /app/src/main/java/**/*.java && \
     jar -cvf app.jar -C build/classes .
 
-# アプリケーションのJARファイルをコピー
-COPY app.jar /app/app.jar
+# アプリケーションのJARファイルを指定の場所にコピー
+# ここではCOPYは不要なので、CMDで直接実行する
+# これにより、app.jarを直接実行します
 
 # アプリケーションの起動コマンド
-CMD ["java", "-jar", "/app/app.jar"]
+CMD ["java", "-jar", "app.jar"]
 
 # ポートを公開します
 EXPOSE 8080
