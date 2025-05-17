@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+group 'com.example.ponts' // あなたのグループID
+version '0.1-SNAPSHOT' // あなたのバージョン
+
+repositories {
+    mavenCentral() // Maven Central リポジトリを使用する場合
+    // 他のリポジトリが必要な場合はここに追加
+}
+
+dependencies {
+	compileOnly("jakarta.servlet:jakarta.servlet-api:5.0.0")
+    implementation("com.google.code.gson:gson:2.9.1")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.18.3")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.18.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.3")
+    implementation("org.json:json:20250107")
+    testImplementation("com.h2database:h2:2.3.232")
+    
+    // ここに依存関係を追加 (例: JUnit)
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+
+test {
+    useJUnitPlatform()
+}
