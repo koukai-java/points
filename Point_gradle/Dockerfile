@@ -1,19 +1,18 @@
 # ベースイメージの指定
 FROM openjdk:21-jdk
 
-# 作業ディレクトリを設定します (一時的なビルド用)
+# 作業ディレクトリを設定します
 WORKDIR /app
 
 # アプリケーションのソースコードをコンテナにコピーします
 COPY . /app/
 
-# アプリケーションをビルドし、JAR ファイルを作成します
-RUN javac -classpath /app/src/main/resources:/app/src/main/java -d build/classes /app/src/main/java/**/*.java && \
-    jar -cvf app.jar -C build/classes .
+# Jakarta Servlet APIの依存関係を追加
+RUN wget -q https://repo1.maven.org/maven2/jakarta/servlet/jakarta.servlet-api/5.0.0/jakarta.servlet-api-5.0.0.jar -P /app/libs/
 
-# アプリケーションのJARファイルを指定の場所にコピー
-# ここではCOPYは不要なので、CMDで直接実行する
-# これにより、app.jarを直接実行します
+# アプリケーションをビルドし、JAR ファイルを作成します
+RUN javac -classpath /app/libs/jakarta.servlet-api-5.0.0.jar:/app/src/main/resources -d build/classes /app/src/main/java/**/*.java && \
+    jar -cvf app.jar -C build/classes .
 
 # アプリケーションの起動コマンド
 CMD ["java", "-jar", "app.jar"]
